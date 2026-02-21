@@ -61,6 +61,3 @@ lifecycle.
 - [Quickstart](./quickstart.md) - Create your first session in 5 minutes
 - [Session Lifecycle](./lifecycle.md) - How sessions live, time out, and get cleaned up
 - [Configuration Reference](./configuration.md) - All session options
-
-> **Need help building with Sessions?**
-> Reach out to us on Discord - we're happy to help!
