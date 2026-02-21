@@ -1,0 +1,14 @@
+{
+  "name": "docs-host",
+  "version": "1.0.0",
+  "description": "Simple documentation host for TestMu docs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "marked": "^11.0.0"
+  }
+}

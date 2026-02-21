@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TestMu AI Browser Agents — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0f12;
+      --surface: #161a20;
+      --border: #252a33;
+      --text: #e6eaf0;
+      --muted: #8b95a5;
+      --accent: #5b9cf4;
+      --accent-hover: #7ab0fa;
+      --code-bg: #1a1e26;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 1.25rem 0;
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      padding: 0 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+    .sidebar-header span {
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+    .nav-section {
+      margin-bottom: 0.25rem;
+    }
+    .nav-section .nav-section {
+      margin-bottom: 0;
+    }
+    .nav-folder {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      padding: 0.4rem 1.25rem 0.2rem;
+    }
+    .nav-folder-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      width: 100%;
+      padding: 0.4rem 1.25rem 0.2rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+    }
+    .nav-folder-toggle:hover { color: var(--text); }
+    .nav-folder-chevron {
+      font-size: 0.5rem;
+      transition: transform 0.2s ease;
+    }
+    .nav-folder-chevron.collapsed { transform: rotate(-90deg); }
+    .nav-folder-content { overflow: hidden; }
+    .nav-folder-content.collapsed { display: none; }
+    .nav-link {
+      display: block;
+      padding: 0.4rem 1.25rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-left: 2px solid transparent;
+      margin-left: 0;
+    }
+    .nav-section > .nav-link {
+      padding-left: 1.5rem;
+    }
+    .nav-link:hover { color: var(--text); }
+    .nav-link.active {
+      color: #fff;
+      background: var(--accent);
+      border-left-color: var(--accent);
+    }
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem 3rem 4rem;
+      max-width: 52rem;
+    }
+    .main h1 { font-size: 1.85rem; margin-top: 0; }
+    .main h2 { font-size: 1.25rem; margin: 1.75rem 0 0.6rem; color: var(--text); }
+    .main h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem; color: var(--muted); }
+    .main p { margin: 0.75rem 0; }
+    .main ul, .main ol { margin: 0.75rem 0; padding-left: 1.5rem; }
+    .main li { margin: 0.35rem 0; }
+    .main a { color: var(--accent); text-decoration: none; }
+    .main a:hover { text-decoration: underline; }
+    .main pre, .main code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--code-bg);
+      border-radius: 6px;
+    }
+    .main code { padding: 0.15em 0.4em; font-size: 0.9em; }
+    .main pre { padding: 1rem 1.25rem; overflow-x: auto; margin: 1rem 0; }
+    .main pre code { padding: 0; background: none; }
+    .main table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    .main th, .main td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    .main th { background: var(--surface); font-weight: 600; }
+    .main blockquote {
+      border-left: 3px solid var(--accent);
+      margin: 1rem 0;
+      padding-left: 1rem;
+      color: var(--muted);
+    }
+    .loading, .error {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .error { color: #e07c7c; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main" id="main">
+      <div class="loading" id="loading">Loading…</div>
+      <div id="content"></div>
+    </main>
+  </div>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const sidebar = $('sidebar');
+    const content = $('content');
+    const loading = $('loading');
+
+    function getDocPath() {
+      const hash = window.location.hash.slice(1).replace(/^\//, '');
+      return hash ? hash + (hash.endsWith('.md') ? '' : '') : '';
+    }
+
+    function pathToUrl(p) {
+      if (!p) return '';
+      return p.endsWith('.md') ? p : p + '.md';
+    }
+
+    function pathToHash(p) {
+      if (!p) return '';
+      return p.replace(/\.md$/, '');
+    }
+
+    function renderTree(node, basePath = '', isCollapsible = false) {
+      if (node.path) {
+        const href = '#' + pathToHash(node.path);
+        const isActive = pathToHash(getDocPath()) === pathToHash(node.path);
+        const label = node.displayName || node.name;
+        return `<a class="nav-link ${isActive ? 'active' : ''}" href="${href}">${escapeHtml(label)}</a>`;
+      }
+      if (node.children && node.children.length) {
+        if (node.name !== 'Documentation') {
+          const label = node.displayName || node.name;
+          const kids = node.children.map(c => renderTree(c, node.name, !!(c.children && c.children.length && !c.path))).join('');
+          const id = 'folder-' + (node.name && node.name !== 'Documentation' ? (basePath ? basePath.replace(/\s+/g, '-').toLowerCase() + '-' : '') + label.replace(/\s+/g, '-').toLowerCase() : Math.random().toString(36).slice(2));
+          if (isCollapsible) {
+            const expanded = localStorage.getItem('nav-' + id) === 'true';
+            return `<div class="nav-section nav-folder-wrap" data-folder-id="${id}">
+              <button type="button" class="nav-folder-toggle" aria-expanded="${expanded}" aria-controls="${id}-content">
+                <span class="nav-folder-chevron${expanded ? '' : ' collapsed'}">▼</span>
+                <span class="nav-folder-label">${escapeHtml(label)}</span>
+              </button>
+              <div id="${id}-content" class="nav-folder-content${expanded ? '' : ' collapsed'}">${kids}</div>
+            </div>`;
+          }
+          return `<div class="nav-section"><div class="nav-folder">${escapeHtml(label)}</div><div class="nav-folder-content">${kids}</div></div>`;
+        }
+        return node.children.map(c => renderTree(c)).join('');
+      }
+      return '';
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s;
+      return div.innerHTML;
+    }
+
+    function buildSidebar(tree) {
+      const header = `<div class="sidebar-header"><span>Docs</span></div>`;
+      const nav = tree.children ? tree.children.map((c) => {
+        const isCollapsible = c.children && c.children.length && !c.path;
+        return renderTree(c, '', isCollapsible);
+      }).join('') : '';
+      sidebar.innerHTML = header + nav;
+      sidebar.querySelectorAll('.nav-link').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.location.hash = a.getAttribute('href').slice(1);
+          loadDoc(pathToUrl(a.getAttribute('href').slice(1)));
+          setActiveLink(a);
+        });
+      });
+      sidebar.querySelectorAll('.nav-folder-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const wrap = btn.closest('.nav-folder-wrap');
+          const content = wrap && wrap.querySelector('.nav-folder-content');
+          const chevron = btn.querySelector('.nav-folder-chevron');
+          if (!content) return;
+          const isCollapsed = content.classList.toggle('collapsed');
+          if (chevron) chevron.classList.toggle('collapsed', isCollapsed);
+          btn.setAttribute('aria-expanded', !isCollapsed);
+          const id = wrap.getAttribute('data-folder-id');
+          if (id) localStorage.setItem('nav-' + id, !isCollapsed);
+        });
+      });
+    }
+
+    function setActiveLink(active) {
+      sidebar.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+      if (active) active.classList.add('active');
+    }
+
+    function rewriteDocLinks(container) {
+      const base = getDocPath().split('/').slice(0, -1).join('/');
+      container.querySelectorAll('a[href]').forEach(a => {
+        const h = a.getAttribute('href');
+        if (h.startsWith('http') || h.startsWith('#') || h.startsWith('mailto:')) return;
+        let target = h;
+        if (h.startsWith('./')) target = base ? base + '/' + h.slice(2) : h.slice(2);
+        else if (h.startsWith('../')) {
+          const parts = base.split('/');
+          const up = (h.match(/\.\.\//g) || []).length;
+          target = parts.slice(0, -up).concat(h.replace(/^(\.\.\/)+/, '')).join('/');
+        } else if (!h.startsWith('/') && !base && !h.includes('/')) target = h;
+        if (target.endsWith('.md') || (!target.includes('.') && target)) {
+          const path = target.endsWith('.md') ? target : target + '.md';
+          a.setAttribute('href', '#' + pathToHash(path));
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.hash = pathToHash(path);
+            loadDoc(path);
+          });
+        }
+      });
+    }
+
+    async function loadDoc(docPath) {
+      if (!docPath) {
+        loading.hidden = false;
+        content.innerHTML = '';
+        loading.textContent = 'Choose a page from the sidebar.';
+        return;
+      }
+      loading.hidden = false;
+      content.innerHTML = '';
+      loading.textContent = 'Loading…';
+      try {
+        const res = await fetch('/api/doc?path=' + encodeURIComponent(docPath));
+        if (!res.ok) throw new Error(res.status === 404 ? 'Page not found' : 'Failed to load');
+        const { html } = await res.json();
+        content.innerHTML = html;
+        loading.hidden = true;
+        rewriteDocLinks(content);
+        const first = content.querySelector('h1');
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        loading.textContent = err.message || 'Failed to load page.';
+        loading.className = 'error';
+      }
+    }
+
+    async function init() {
+      try {
+        const treeRes = await fetch('/api/tree');
+        const tree = await treeRes.json();
+        buildSidebar(tree);
+
+        const docPath = getDocPath();
+        const firstPath = docPath ? pathToUrl(docPath) : getFirstDocPath(tree);
+        if (firstPath) {
+          if (!docPath) window.location.hash = pathToHash(firstPath);
+          await loadDoc(firstPath);
+        } else {
+          loading.textContent = 'No documentation files found.';
+        }
+      } catch (e) {
+        loading.textContent = 'Could not load documentation.';
+        loading.className = 'error';
+      }
+
+      window.addEventListener('hashchange', () => {
+        const p = pathToUrl(getDocPath());
+        if (p) loadDoc(p);
+        const active = sidebar.querySelector('a[href="#' + pathToHash(p) + '"]');
+        setActiveLink(active || null);
+      });
+    }
+
+    function getFirstDocPath(node) {
+      if (node.path) return node.path;
+      if (node.children && node.children.length) {
+        const first = node.children.find(c => c.path) || node.children[0];
+        return first ? getFirstDocPath(first) : null;
+      }
+      return null;
+    }
+
+    init();
+  </script>
+</body>
+</html>
