@@ -75,6 +75,6 @@ Learn more about each in [How to Connect](./how-to-connect.md).
 
 ### Get started
 
-- [Sessions Overview](../sessions/overview.md) — Understand the core concept
-- [Quickstart](../sessions/quickstart.md) — Create your first session in 5 minutes
-- [Connect to a Session](../guides/connect.md) - Puppeteer, Playwright, or Selenium
+- [Sessions Overview](../Browser-SDK/sessions/overview.md) — Understand the core concept
+- [Quickstart](../Browser-SDK/sessions/quickstart.md) — Create your first session in 5 minutes
+- [Connect to a Session](../Browser-SDK/guides/connect.md) - Puppeteer, Playwright, or Selenium

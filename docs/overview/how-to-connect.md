@@ -18,15 +18,15 @@ const client = new testMuBrowser();
 ```
 
 The SDK is what this documentation covers in detail. Everything in the
-[Guides](../guides/),
-[Sessions](../sessions/), and
-[Advanced Features](../advanced-features/) sections is SDK
+[Guides](../Browser-SDK/guides/),
+[Sessions](../Browser-SDK/sessions/), and
+[Advanced Features](../Browser-SDK/advanced-features/) sections is SDK
 functionality that is built, tested, and ready to use.
 
 **Best for:** Agent developers who want full control in TypeScript/JavaScript.
 Direct integration into your agent's codebase.
 
-→ [Get started with the TestMu Browser SDK](../sessions/quickstart.md)
+→ [Get started with the TestMu Browser SDK](../Browser-SDK/sessions/quickstart.md)
 
 
 ### API
@@ -39,7 +39,7 @@ it from Python, Go, Rust, or any language that speaks HTTP.
 **Best for:** Multi-language agent stacks, serverless functions, and teams that
 don't want a Node.js dependency.
 
-→ [View planned API structure](../others/api-reference.md)
+→ [View planned API structure](../Browser-SDK/others/api-reference.md)
 
 
 ### Skills
@@ -54,4 +54,4 @@ creation, navigation, data extraction, cleanup.
 **Best for:** Agent builders using established frameworks who want plug-and-play
 browser access without managing sessions manually.
 
-→ [View planned Skills catalog](../others/skills.md)
+→ [View planned Skills catalog](../Browser-SDK/others/skills.md)
