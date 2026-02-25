@@ -35,9 +35,9 @@ subsequent Puppeteer calls work exactly the same as before.
 ### Basic Usage
 
 ```typescript
-import { testMuBrowser } from '@testmuai/testmu-cloud';
+import { Browser } from '@testmuai/testmu-cloud';
 
-const client = new testMuBrowser();
+const client = new Browser();
 
 // 1. Create a cloud session
 const session = await client.sessions.create({
@@ -109,9 +109,9 @@ A complete script that creates a session, scrapes a page title, and cleans up
 with proper error handling:
 
 ```typescript
-import { testMuBrowser } from '@testmuai/testmu-cloud';
+import { Browser } from '@testmuai/testmu-cloud';
 
-const client = new testMuBrowser();
+const client = new Browser();
 
 async function main() {
     const session = await client.sessions.create({
@@ -173,9 +173,9 @@ Like Puppeteer, the main change is how you connect - replacing
 ### Basic Usage
 
 ```typescript
-import { testMuBrowser } from '@testmuai/testmu-cloud';
+import { Browser } from '@testmuai/testmu-cloud';
 
-const client = new testMuBrowser();
+const client = new Browser();
 
 const session = await client.sessions.create({
     adapter: 'playwright',
@@ -245,9 +245,9 @@ connecting to TestMu AI's Selenium Hub.
 ### Basic Usage
 
 ```typescript
-import { testMuBrowser } from '@testmuai/testmu-cloud';
+import { Browser } from '@testmuai/testmu-cloud';
 
-const client = new testMuBrowser();
+const client = new Browser();
 
 const session = await client.sessions.create({
     adapter: 'selenium',

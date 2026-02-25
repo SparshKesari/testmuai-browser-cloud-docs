@@ -52,9 +52,9 @@ and cleans up:
 ```typescript
 // my-first-session.ts
 
-import { testMuBrowser } from '@testmuai/testmu-cloud';
+import { Browser } from '@testmuai/testmu-cloud';
 
-const client = new testMuBrowser();
+const client = new Browser();
 
 async function main() {
     // Create a session

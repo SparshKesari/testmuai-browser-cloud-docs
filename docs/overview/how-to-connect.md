@@ -13,8 +13,8 @@ adapters, stealth, profiles, files, extensions, and tunnels from your Node.js
 application.
 
 ```typescript
-import { testMuBrowser } from '@testmuai/testmu-cloud';
-const client = new testMuBrowser();
+import { Browser } from '@testmuai/testmu-cloud';
+const client = new Browser();
 ```
 
 The SDK is what this documentation covers in detail. Everything in the
