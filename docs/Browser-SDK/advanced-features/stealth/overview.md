@@ -144,11 +144,6 @@ The TestMu Browser SDK includes a built-in test that visits the bot detection
 site `bot.sannysoft.com` with stealth ON and OFF, saving screenshots for visual
 comparison:
 
-```bash
-npm run build
-npx ts-node test-features/08-stealth-mode.ts
-```
-
 Screenshots are saved to `test-output/`. Stealth ON shows green checks; stealth
 OFF shows red failures.
 
