@@ -13,7 +13,7 @@ adapters, stealth, profiles, files, extensions, and tunnels from your Node.js
 application.
 
 ```typescript
-import { Browser } from '@testmuai/testmu-cloud';
+import { Browser } from '@testmuai/browser-cloud';
 const client = new Browser();
 ```
 

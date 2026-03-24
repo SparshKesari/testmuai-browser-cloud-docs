@@ -38,7 +38,7 @@ LT_ACCESS_KEY=your_access_key
 ### Installing the TestMu Browser SDK
 
 ```bash
-npm i @testmuai/testmu-cloud
+npm i @testmuai/browser-cloud
 ```
 
 **Requirements:** Node.js 16+ (Node 18+ required if using the Playwright adapter)
@@ -52,7 +52,7 @@ and cleans up:
 ```typescript
 // my-first-session.ts
 
-import { Browser } from '@testmuai/testmu-cloud';
+import { Browser } from '@testmuai/browser-cloud';
 
 const client = new Browser();
 
